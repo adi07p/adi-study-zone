@@ -32,3 +32,7 @@ header {
 .file {
     margin-left: 20px;
 }
+.file .details {
+    display: flex;
+    justify-content: space-between;
+}
