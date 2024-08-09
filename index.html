@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Question Paper Generator</title>
+    <link rel="stylesheet" href="styles.css"> <!-- External CSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- PDF Library -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- LaTeX Support -->
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>Padhai Karo</h1>
+        <h2>PKTS XI NEET</h2>
+    </header>
+
+    <div id="question-paper">
+        <button id="add-question-btn">Add Question</button>
+        <!-- Questions will be dynamically added here -->
+    </div>
+
+    <footer>
+        <span id="page-number">Page 1</span>
+    </footer>
+
+    <button onclick="generatePDF()">Download PDF</button>
+
+    <script src="script.js"></script> <!-- External JS -->
+</body>
+</html>
