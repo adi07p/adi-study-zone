@@ -1,76 +1,81 @@
-document.addEventListener("DOMContentLoaded", function() {
-    let questionCount = 0;
+let questionCount = 0;
 
-    // Function to add a new question
-    document.getElementById('add-question-btn').addEventListener('click', function() {
-        questionCount++;
-        const questionPaper = document.getElementById('question-paper');
-        
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        questionDiv.setAttribute('data-question-id', questionCount);
-        
-        questionDiv.innerHTML = `
-            <h3>Question ${questionCount}</h3>
-            <textarea placeholder="Enter your question here..." rows="3" class="question-text"></textarea>
-            <p>LaTeX Support: <input type="checkbox" class="latex-toggle"></p>
-            <div class="latex-input" style="display:none;">
-                <textarea placeholder="Enter LaTeX here..." rows="3" class="latex-text"></textarea>
-                <div class="latex-preview"></div>
+function updateTitle() {
+    const title = document.getElementById('title').value;
+    document.getElementById('titleText').textContent = title;
+}
+
+function updateSubject() {
+    const subject = document.getElementById('subject').value;
+    document.getElementById('subjectText').textContent = subject;
+}
+
+function previewLogo() {
+    const file = document.getElementById('logo').files[0];
+    const reader = new FileReader();
+    reader.onloadend = function () {
+        document.getElementById('logoPreview').src = reader.result;
+    }
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
+function addQuestion() {
+    const questionText = document.getElementById('questionText').value;
+    const optionsText = document.getElementById('optionsText').value;
+    const options = optionsText.split(',');
+    const file = document.getElementById('questionImage').files[0];
+    let imageHtml = '';
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            imageHtml = `<img src="${reader.result}" alt="Question Image" style="max-width: 100%; margin-top: 10px;">`;
+            appendQuestion(questionText, options, imageHtml);
+        }
+        reader.readAsDataURL(file);
+    } else {
+        appendQuestion(questionText, options, imageHtml);
+    }
+
+    // Clear input fields
+    document.getElementById('questionText').value = '';
+    document.getElementById('optionsText').value = '';
+    document.getElementById('questionImage').value = '';
+}
+
+function appendQuestion(questionText, options, imageHtml) {
+    const questionHtml = `
+        <div class="question">
+            <p>${++questionCount}. ${questionText}</p>
+            ${imageHtml}
+            <div class="options">
+                ${options.map((option, index) => `<p>(${index + 1}) ${option.trim()}</p>`).join('')}
             </div>
-            <input type="file" accept="image/*" class="image-upload">
-            <button class="remove-question-btn">Remove</button>
-        `;
-        
-        questionPaper.appendChild(questionDiv);
-        
-        // Bind events for the newly added question
-        bindEvents(questionDiv);
+        </div>
+    `;
+
+    if (questionCount % 2 === 1) {
+        document.getElementById('leftColumn').innerHTML += questionHtml;
+    } else {
+        document.getElementById('rightColumn').innerHTML += questionHtml;
+    }
+
+    // Update page numbers
+    updatePageNumbers();
+}
+
+function updatePageNumbers() {
+    const pages = document.querySelectorAll('.columns');
+    pages.forEach((page, index) => {
+        page.nextElementSibling.querySelector('.page-number').textContent = `Page ${index + 1}`;
     });
+}
 
-    // Function to bind events to the question elements
-    function bindEvents(questionDiv) {
-        // LaTeX toggle
-        questionDiv.querySelector('.latex-toggle').addEventListener('change', function() {
-            const latexInput = questionDiv.querySelector('.latex-input');
-            if (this.checked) {
-                latexInput.style.display = 'block';
-            } else {
-                latexInput.style.display = 'none';
-            }
-        });
-
-        // LaTeX live preview
-        questionDiv.querySelector('.latex-text').addEventListener('input', function() {
-            const previewDiv = questionDiv.querySelector('.latex-preview');
-            previewDiv.innerHTML = this.value;
-            MathJax.typesetPromise([previewDiv]); // Rerender LaTeX
-        });
-
-        // Remove question
-        questionDiv.querySelector('.remove-question-btn').addEventListener('click', function() {
-            questionDiv.remove();
-        });
-    }
-
-    // Function to generate PDF
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        let content = document.querySelector('#question-paper').cloneNode(true);
-        let questions = content.querySelectorAll('.question');
-
-        questions.forEach((q, index) => {
-            doc.text(20, 30 + (index * 20), `Question ${index + 1}: ${q.querySelector('.question-text').value}`);
-            const latexText = q.querySelector('.latex-text').value;
-            if (latexText) {
-                doc.text(20, 40 + (index * 20), `LaTeX: ${latexText}`);
-            }
-        });
-
-        doc.save('question-paper.pdf');
-    }
-
-    window.generatePDF = generatePDF;
-});
+function generatePDF() {
+    const element = document.getElementById('questionPaper');
+    html2pdf()
+        .from(element)
+        .save('question-paper.pdf');
+}
