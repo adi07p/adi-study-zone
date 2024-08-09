@@ -1,3 +1,5 @@
+// script.js
+
 let questionCount = 0;
 
 function updateTitle() {
@@ -69,13 +71,22 @@ function appendQuestion(questionText, options, imageHtml) {
 function updatePageNumbers() {
     const pages = document.querySelectorAll('.columns');
     pages.forEach((page, index) => {
-        page.nextElementSibling.querySelector('.page-number').textContent = `Page ${index + 1}`;
+        page.nextElementSibling.querySelector('.page-number').textContent = index + 1;
     });
 }
 
 function generatePDF() {
     const element = document.getElementById('questionPaper');
-    html2pdf()
-        .from(element)
-        .save('question-paper.pdf');
+    
+    // Using a more reliable PDF generation API
+    const opt = {
+        margin: 1,
+        filename: 'question-paper.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    // Using html2pdf library to generate the PDF
+    html2pdf().from(element).set(opt).save();
 }
