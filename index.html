@@ -1,32 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Question Paper Generator</title>
-    <link rel="stylesheet" href="styles.css"> <!-- External CSS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- PDF Library -->
+    <title>Question Paper Generator</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> <!-- LaTeX Support -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body>
-    <header>
-        <img src="logo.png" alt="Logo" class="logo">
-        <h1>Padhai Karo</h1>
-        <h2>PKTS XI NEET</h2>
-    </header>
 
-    <div id="question-paper">
-        <button id="add-question-btn">Add Question</button>
-        <!-- Questions will be dynamically added here -->
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="logo">
+            <img id="logoPreview" src="path/to/logo.png" alt="Logo">
+        </div>
+        <div class="title" id="titleText">PADHAIKARO</div>
+        <div class="subject" id="subjectText">PKTS XI NEET</div>
     </div>
 
-    <footer>
-        <span id="page-number">Page 1</span>
-    </footer>
+    <!-- Question Columns -->
+    <div id="questionPaper">
+        <div class="columns" id="contentSection">
+            <div class="column" id="leftColumn">
+                <!-- Dynamic questions will be added here -->
+            </div>
+            <div class="column" id="rightColumn">
+                <!-- Dynamic questions will be added here -->
+            </div>
+        </div>
 
-    <button onclick="generatePDF()">Download PDF</button>
+        <!-- Footer with Page Number -->
+        <div class="footer">
+            <div class="page-number" id="pageNumber">Page 1</div>
+        </div>
+    </div>
 
-    <script src="script.js"></script> <!-- External JS -->
+    <!-- Form for Inputting Questions -->
+    <div class="form-container">
+        <label for="title">Exam Title:</label>
+        <input type="text" id="title" placeholder="Enter exam title" onchange="updateTitle()">
+
+        <label for="subject">Subject Name:</label>
+        <input type="text" id="subject" placeholder="Enter subject name" onchange="updateSubject()">
+
+        <label for="logo">Upload Logo:</label>
+        <input type="file" id="logo" onchange="previewLogo()">
+
+        <label for="questionText">Question Text (Supports LaTeX):</label>
+        <textarea id="questionText" rows="3" placeholder="Enter the question"></textarea>
+
+        <label for="optionsText">Options (Separate by commas):</label>
+        <textarea id="optionsText" rows="3" placeholder="Enter options"></textarea>
+
+        <label for="questionImage">Upload Image (Optional):</label>
+        <input type="file" id="questionImage">
+
+        <button onclick="addQuestion()">Add Question</button>
+    </div>
+
+    <!-- Button to Generate and Download PDF -->
+    <button onclick="generatePDF()">Download as PDF</button>
+
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
