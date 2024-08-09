@@ -1,10 +1,10 @@
-/* Basic styling for the question paper */
+/* styles.css */
+
 body {
     font-family: 'Times New Roman', Times, serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #f8f8f8;
 }
 
 .header {
@@ -47,17 +47,12 @@ body {
 .question {
     margin-bottom: 20px;
     page-break-inside: avoid;
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .question p {
     margin: 0;
     padding: 0;
     font-size: 18px;
-    color: #333333;
 }
 
 .options {
@@ -90,37 +85,4 @@ body {
 .form-container textarea {
     display: block;
     margin-bottom: 10px;
-    width: 100%;
-}
-
-.form-container input[type="text"],
-.form-container textarea {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.form-container button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.form-container button:hover {
-    background-color: #45a049;
-}
-
-.form-container input[type="file"] {
-    padding: 5px;
-}
-
-.image-preview {
-    max-width: 100%;
-    margin-top: 10px;
 }
